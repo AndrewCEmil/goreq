@@ -258,6 +258,20 @@ func (r *Request) AddHeader(name string, value string) {
 	r.headers = append(r.headers, headerTuple{name: name, value: value})
 }
 
+func (r *Request) SetHeader(name string, value string) {
+	targetIdx := -1
+	for i, header := range r.headers {
+		if header.name == name {
+			targetIdx = i
+		}
+	}
+	if targetIdx >= 0 {
+		r.headers[targetIdx].value = value
+	} else {
+		r.AddHeader(name, value)
+	}
+}
+
 func (r Request) WithHeader(name string, value string) Request {
 	r.AddHeader(name, value)
 	return r
