@@ -259,14 +259,16 @@ func (r *Request) AddHeader(name string, value string) {
 }
 
 func (r *Request) SetHeader(name string, value string) {
-	targetIdx := -1
+	targetIdxs := []int{}
 	for i, header := range r.headers {
 		if header.name == name {
-			targetIdx = i
+			targetIdxs = append(targetIdxs, i)
 		}
 	}
-	if targetIdx >= 0 {
-		r.headers[targetIdx].value = value
+	if len(targetIdxs) > 0 {
+		for _, targetIdx := range targetIdxs {
+			r.headers[targetIdx].value = value
+		}
 	} else {
 		r.AddHeader(name, value)
 	}
